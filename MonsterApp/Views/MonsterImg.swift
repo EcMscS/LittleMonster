@@ -59,7 +59,7 @@ class MonsterImg: UIImageView {
         for anImage in 1...numberOfTimes {
             
             if let nameOfImage = UIImage(named:"\(imageName)\(anImage).png") {
-                images.append(nameOfImage)s
+                images.append(nameOfImage)
             }
         }
         
