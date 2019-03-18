@@ -114,6 +114,10 @@ class MainVC: UIViewController {
         setupObservers()
         setupViews()
         setupMovableObjects()
+        setupMusic()
+        
+        //Start Game
+        startTimer()
         
     }
     
@@ -146,7 +150,7 @@ class MainVC: UIViewController {
             panelView.topAnchor.constraint(equalTo: view.topAnchor, constant: 55),
             panelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             panelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            panelView.heightAnchor.constraint(equalToConstant: 80),
+            panelView.heightAnchor.constraint(equalToConstant: view.frame.height / 8),
             
             mainView.topAnchor.constraint(equalTo: view.topAnchor),
             mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -157,14 +161,15 @@ class MainVC: UIViewController {
             bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
+            itemContainerView.topAnchor.constraint(equalTo: panelView.bottomAnchor, constant: 0),
+            itemContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            itemContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            itemContainerView.heightAnchor.constraint(equalToConstant: view.frame.height / 3),
+            
+            monsterView.topAnchor.constraint(equalTo: itemContainerView.bottomAnchor, constant: 10),
             monsterView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: -golem.frame.height + 40),
             monsterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            monsterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            
-            itemContainerView.topAnchor.constraint(equalTo: panelView.bottomAnchor, constant: 25),
-            itemContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            itemContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            itemContainerView.heightAnchor.constraint(equalToConstant: 150)
+            monsterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
             
             ])
         
@@ -187,18 +192,18 @@ class MainVC: UIViewController {
         
         panelView.addSubview(penaltyStackView)
         
-        penaltyStackView.distribution = .fill
+        penaltyStackView.distribution = .fillProportionally
         penaltyStackView.axis = .horizontal
-        penaltyStackView.spacing = -5
+        penaltyStackView.spacing = 5
         
         penaltyStackView.translatesAutoresizingMaskIntoConstraints = false
-        penaltyStackView.topAnchor.constraint(equalTo: panelView.topAnchor, constant: 4).isActive = true
-        penaltyStackView.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -21).isActive = true
+        penaltyStackView.topAnchor.constraint(equalTo: panelView.topAnchor, constant: 0).isActive = true
+        penaltyStackView.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: 0).isActive = true
         penaltyStackView.bottomAnchor.constraint(equalTo: panelView.bottomAnchor, constant: 0).isActive = true
-        penaltyStackView.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 5).isActive = true
+        penaltyStackView.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 0).isActive = true
 
         penaltyStackView.isLayoutMarginsRelativeArrangement = true
-        penaltyStackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        penaltyStackView.layoutMargins = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         
         //Create Stackview for 2 draggable objects Food and Heart items
         let itemStackView = UIStackView(arrangedSubviews: [
@@ -210,7 +215,7 @@ class MainVC: UIViewController {
         
         itemStackView.distribution = .fillProportionally
         itemStackView.axis = .horizontal
-        itemStackView.spacing = 10
+        itemStackView.spacing = 15
         
         itemStackView.translatesAutoresizingMaskIntoConstraints = false
         itemStackView.topAnchor.constraint(equalTo: itemContainerView.topAnchor).isActive = true
@@ -218,8 +223,8 @@ class MainVC: UIViewController {
         itemStackView.bottomAnchor.constraint(equalTo: itemContainerView.bottomAnchor).isActive = true
         itemStackView.leadingAnchor.constraint(equalTo: itemContainerView.leadingAnchor).isActive = true
         
-        //itemStackView.isLayoutMarginsRelativeArrangement = true
-        //itemStackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        itemStackView.isLayoutMarginsRelativeArrangement = true
+        itemStackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         NSLayoutConstraint.activate([
             
@@ -290,7 +295,7 @@ class MainVC: UIViewController {
         }
         
         //Create Timer
-        let timerInterval: Double = 3.0
+        let timerInterval: Double = 5.0
         timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(changeGameState), userInfo: nil, repeats: true)
         
         
