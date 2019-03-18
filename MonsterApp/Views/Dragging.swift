@@ -11,6 +11,7 @@ import UIKit
 
 class DragImg: UIImageView {
     
+    var imageName: String!
     var originalPosition: CGPoint!
     var dropTarget: UIView?
     //var notification: NSNotification!
@@ -19,9 +20,16 @@ class DragImg: UIImageView {
         super.init(frame: frame)
     }
     
-    required init? (coder aDecoder: NSCoder) {
-        super.init(coder:aDecoder)
-        
+    init(name: String) {
+        super.init(image: UIImage.init(named: name))
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setImage(name: String) {
+        self.image = UIImage.init(named: "name")
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -12,12 +12,14 @@ import UIKit
 class MonsterImg: UIImageView {
     
     override init(frame: CGRect) {
-         super.init(frame: frame)
+        super.init(frame: frame)
+        self.image = UIImage(named: "idle1.png")
+        self.contentMode = .scaleToFill
+        self.playIdleAnimation()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.playIdleAnimation()
+        fatalError("init(coder:) has not been implemented")
     }
     
     func playIdleAnimation() {
@@ -51,9 +53,7 @@ class MonsterImg: UIImageView {
     }
     
     func createArrayOfImages(imageName: String, numberOfTimes: Int) -> [UIImage] {
-        
-
-        
+    
         var images = [UIImage]()
         
         for anImage in 1...numberOfTimes {
