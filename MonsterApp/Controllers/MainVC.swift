@@ -62,7 +62,7 @@ class MainVC: UIViewController {
     
     let woodPanel: UIImageView = {
         let v = UIImageView.init(image: UIImage.init(named: "livespanel.png"))
-        v.contentMode = .scaleAspectFill
+        v.contentMode = .scaleAspectFit
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -130,13 +130,17 @@ class MainVC: UIViewController {
     fileprivate func setupViews() {
         
         //Create Golem
-        let golemWidth = view.frame.width + 125
-        let golemHeight = golemWidth - 75
+        let golemWidth = view.frame.width + 50
+        let golemHeight = golemWidth - 30
         golem = MonsterImg.init(frame: CGRect(x: 0, y: 0, width: golemWidth, height: golemHeight))
     
         //Create Heart and Food
         foodImg = DragImg.init(name: "food.png")
         heartImg = DragImg.init(name: "heart.png")
+        
+        //Change to aspect ratio of container
+        foodImg.contentMode = .scaleAspectFit
+        heartImg.contentMode = .scaleAspectFit
         
         //Add Background
         view.addSubview(mainView)
@@ -147,27 +151,27 @@ class MainVC: UIViewController {
         
         NSLayoutConstraint.activate([
             
-            panelView.topAnchor.constraint(equalTo: view.topAnchor, constant: 55),
-            panelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            panelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            panelView.heightAnchor.constraint(equalToConstant: view.frame.height / 8),
-            
             mainView.topAnchor.constraint(equalTo: view.topAnchor),
             mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             mainView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mainView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
+            panelView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height / 15),
+            panelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            panelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            panelView.heightAnchor.constraint(equalToConstant: view.frame.height / 8),
+            
+            itemContainerView.topAnchor.constraint(equalTo: panelView.bottomAnchor, constant: 10),
+            itemContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            itemContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            itemContainerView.heightAnchor.constraint(equalToConstant: view.frame.height / 5),
+            //itemContainerView.bottomAnchor.constraint(equalTo: monsterView.topAnchor, constant: 0),
+            
             bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -ground.frame.height),
             bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            itemContainerView.topAnchor.constraint(equalTo: panelView.bottomAnchor, constant: 0),
-            itemContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            itemContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            itemContainerView.heightAnchor.constraint(equalToConstant: view.frame.height / 3),
-            
-            monsterView.topAnchor.constraint(equalTo: itemContainerView.bottomAnchor, constant: 10),
-            monsterView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: -golem.frame.height + 40),
+            monsterView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: 40),
             monsterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             monsterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
             
@@ -177,6 +181,20 @@ class MainVC: UIViewController {
         bottomView.addSubview(ground)
         monsterView.addSubview(golem)
         panelView.addSubview(woodPanel)
+        
+        NSLayoutConstraint.activate([
+            
+            woodPanel.topAnchor.constraint(equalTo: panelView.topAnchor),
+            woodPanel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor),
+            woodPanel.bottomAnchor.constraint(equalTo: panelView.bottomAnchor),
+            woodPanel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor),
+            
+            golem.topAnchor.constraint(equalTo: monsterView.topAnchor),
+            golem.leadingAnchor.constraint(equalTo: monsterView.leadingAnchor),
+            golem.bottomAnchor.constraint(equalTo: monsterView.bottomAnchor),
+            golem.trailingAnchor.constraint(equalTo: monsterView.trailingAnchor)
+            
+            ])
         
         //Initial setting of Penalty Items 1 - 3 set to DIM_ALPHA
         penaltyImg1.alpha = DIM_ALPHA
@@ -192,9 +210,9 @@ class MainVC: UIViewController {
         
         panelView.addSubview(penaltyStackView)
         
-        penaltyStackView.distribution = .fillProportionally
+        penaltyStackView.distribution = .fillEqually
         penaltyStackView.axis = .horizontal
-        penaltyStackView.spacing = 5
+        penaltyStackView.spacing = 0
         
         penaltyStackView.translatesAutoresizingMaskIntoConstraints = false
         penaltyStackView.topAnchor.constraint(equalTo: panelView.topAnchor, constant: 0).isActive = true
@@ -203,7 +221,7 @@ class MainVC: UIViewController {
         penaltyStackView.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: 0).isActive = true
 
         penaltyStackView.isLayoutMarginsRelativeArrangement = true
-        penaltyStackView.layoutMargins = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        penaltyStackView.layoutMargins = UIEdgeInsets(top: 20, left: 22, bottom: 20, right: 30)
         
         //Create Stackview for 2 draggable objects Food and Heart items
         let itemStackView = UIStackView(arrangedSubviews: [
@@ -213,9 +231,9 @@ class MainVC: UIViewController {
        
         itemContainerView.addSubview(itemStackView)
         
-        itemStackView.distribution = .fillProportionally
+        itemStackView.distribution = .fillEqually
         itemStackView.axis = .horizontal
-        itemStackView.spacing = 15
+        itemStackView.spacing = 10
         
         itemStackView.translatesAutoresizingMaskIntoConstraints = false
         itemStackView.topAnchor.constraint(equalTo: itemContainerView.topAnchor).isActive = true
@@ -224,16 +242,9 @@ class MainVC: UIViewController {
         itemStackView.leadingAnchor.constraint(equalTo: itemContainerView.leadingAnchor).isActive = true
         
         itemStackView.isLayoutMarginsRelativeArrangement = true
-        itemStackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        itemStackView.layoutMargins = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         
-        NSLayoutConstraint.activate([
-            
-            woodPanel.topAnchor.constraint(equalTo: panelView.topAnchor),
-            woodPanel.leadingAnchor.constraint(equalTo: panelView.leadingAnchor),
-            woodPanel.bottomAnchor.constraint(equalTo: panelView.bottomAnchor),
-            woodPanel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor),
-            
-            ])
+
     }
     
     fileprivate func setupMovableObjects() {
